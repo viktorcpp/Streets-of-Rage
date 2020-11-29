@@ -9,9 +9,9 @@
     </CheatEntry>
     <CheatEntry>
       <ID>9213</ID>
-      <Description>"Unlimited HP - 6553600"</Description>
+      <Description>"THIS ===&gt;"</Description>
       <Options moDeactivateChildrenAsWell="1"/>
-      <LastState Activated="1"/>
+      <LastState/>
       <Color>008000</Color>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript>[ENABLE]
@@ -105,9 +105,43 @@ dealloc(newmemUnlimHP)
       </Hotkeys>
       <CheatEntries>
         <CheatEntry>
+          <ID>9229</ID>
+          <Description>"Infinite Lives"</Description>
+          <LastState/>
+          <Color>008000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+{$asm}
+/*
+SOR4.exe+3C877C - FF 09                 - dec [rcx]
+SOR4.exe+3C877E - 48 8B CE              - mov rcx,rsi
+SOR4.exe+3C8781 - 8B D3                 - mov edx,ebx
+SOR4.exe+3C8783 - 45 33 C0              - xor r8d,r8d
+*/
+
+unregistersymbol(injectInjLivesMy)
+
+aobscanmodule( injectInjLivesMy, SOR4.exe, FF 09 48 8B CE )
+
+injectInjLivesMy:
+    nop
+    nop
+registersymbol(injectInjLivesMy)
+
+[DISABLE]
+{$asm}
+
+injectInjLivesMy:
+    db FF 09
+
+unregistersymbol(injectInjLivesMy)
+
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
           <ID>9241</ID>
           <Description>"One Hit Kill"</Description>
-          <LastState Activated="1"/>
+          <LastState/>
           <Color>008000</Color>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
@@ -162,7 +196,6 @@ dealloc(newmemOneHitKill)
           <DropDownList DisplayValueAsItem="1">0:Off
 1:On
 </DropDownList>
-          <LastState Value="0" RealAddress="7FF7D3F60031"/>
           <ShowAsSigned>0</ShowAsSigned>
           <VariableType>4 Bytes</VariableType>
           <Address>bInfHealth</Address>
@@ -171,7 +204,7 @@ dealloc(newmemOneHitKill)
           <ID>9214</ID>
           <Description>"Base ADDR"</Description>
           <Options moDeactivateChildrenAsWell="1"/>
-          <LastState Value="00007FF7D4B9F490" RealAddress="1B41618EF40"/>
+          <LastState Value="00007FF7D4B9F490" RealAddress="240564BA528"/>
           <ShowAsHex>1</ShowAsHex>
           <ShowAsSigned>0</ShowAsSigned>
           <Color>C0C0C0</Color>
@@ -183,7 +216,7 @@ dealloc(newmemOneHitKill)
               <Description>"Health"</Description>
               <DropDownList DisplayValueAsItem="1">6553600:Max
 </DropDownList>
-              <LastState Value="6160384" RealAddress="1B41618EF70"/>
+              <LastState Value="6553600" RealAddress="240564BA558"/>
               <ShowAsSigned>0</ShowAsSigned>
               <Color>FF0000</Color>
               <VariableType>8 Bytes</VariableType>
@@ -191,272 +224,14 @@ dealloc(newmemOneHitKill)
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
-      </CheatEntries>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>142</ID>
-      <Description>"==========================================================="</Description>
-      <LastState Value="" RealAddress="00000000"/>
-      <GroupHeader>1</GroupHeader>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>9200</ID>
-      <Description>"Unlimited Lives"</Description>
-      <Options moDeactivateChildrenAsWell="1"/>
-      <LastState/>
-      <Color>008000</Color>
-      <VariableType>Auto Assembler Script</VariableType>
-      <AssemblerScript>[ENABLE]
-{$asm}
-/*
-SOR4.exe+3C876D - 4A 8D 4C 21 10 - lea rcx, [rcx+r12+10]       &lt;&lt;&lt;&lt;&lt;    THIS
-SOR4.exe+3C8772 - 83 79 18 00    - cmp dword ptr [rcx+18], 00
-SOR4.exe+3C8776 - 7E 1A          - jle SOR4.exe+3C8792
-*/
-
-unregistersymbol(injectInfLives)
-unregistersymbol(pPlayerStruct2)
-
-aobscanmodule( injectInfLives, SOR4.exe, 4A 8D 4C 21 10 83 )
-alloc( newmemInfLives, 1024, injectInfLives )
-
-label(code)
-label(pPlayerStruct2)
-
-newmemInfLives:
-code:
-    lea rcx, [rcx+r12+10]
-    mov [rcx+18], #7
-    mov [pPlayerStruct2], rcx
-    jmp injectInfLives+5
-
-pPlayerStruct2:
-    dq 0
-registersymbol(pPlayerStruct2)
-
-injectInfLives:
-    jmp newmemInfLives
-registersymbol(injectInfLives)
-
-[DISABLE]
-{$asm}
-
-injectInfLives:
-    db 4A 8D 4C 21 10
-
-unregistersymbol(injectInfLives)
-unregistersymbol(pPlayerStruct2)
-
-dealloc(newmemInfLives)
-
-</AssemblerScript>
-      <Hotkeys>
-        <Hotkey>
-          <Action>Activate</Action>
-          <Keys>
-            <Key>18</Key>
-            <Key>45</Key>
-          </Keys>
-          <ID>0</ID>
-          <ActivateSound>Activate</ActivateSound>
-        </Hotkey>
-        <Hotkey>
-          <Action>Deactivate</Action>
-          <Keys>
-            <Key>18</Key>
-            <Key>46</Key>
-          </Keys>
-          <ID>1</ID>
-          <DeactivateSound>Deactivate</DeactivateSound>
-        </Hotkey>
-        <Hotkey>
-          <Action>Toggle Activation</Action>
-          <Keys>
-            <Key>17</Key>
-            <Key>97</Key>
-          </Keys>
-          <ID>2</ID>
-          <ActivateSound>Activate</ActivateSound>
-          <DeactivateSound>Deactivate</DeactivateSound>
-        </Hotkey>
-      </Hotkeys>
-      <CheatEntries>
         <CheatEntry>
-          <ID>9216</ID>
-          <Description>"pPlayerStruct2"</Description>
-          <ShowAsHex>1</ShowAsHex>
-          <ShowAsSigned>0</ShowAsSigned>
-          <VariableType>8 Bytes</VariableType>
-          <Address>[pPlayerStruct2]</Address>
-          <CheatEntries>
-            <CheatEntry>
-              <ID>9225</ID>
-              <Description>"Lives"</Description>
-              <ShowAsSigned>0</ShowAsSigned>
-              <VariableType>4 Bytes</VariableType>
-              <Address>+18</Address>
-            </CheatEntry>
-            <CheatEntry>
-              <ID>9226</ID>
-              <Description>"Health Max"</Description>
-              <ShowAsSigned>0</ShowAsSigned>
-              <VariableType>4 Bytes</VariableType>
-              <Address>+1C</Address>
-            </CheatEntry>
-            <CheatEntry>
-              <ID>9227</ID>
-              <Description>"Stars"</Description>
-              <ShowAsSigned>0</ShowAsSigned>
-              <VariableType>4 Bytes</VariableType>
-              <Address>+44</Address>
-            </CheatEntry>
-          </CheatEntries>
-        </CheatEntry>
-      </CheatEntries>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>9211</ID>
-      <Description>"Unlimited Scores"</Description>
-      <Options moDeactivateChildrenAsWell="1"/>
-      <LastState/>
-      <Color>008000</Color>
-      <VariableType>Auto Assembler Script</VariableType>
-      <AssemblerScript>[ENABLE]
-{$asm}
-/*
-SOR4.exe+3B844D - 03 41 28 - add eax,[rcx+28]
-SOR4.exe+3B8450 - 48 8B CA - mov rcx,rdx
-SOR4.exe+3B8453 - 8B D0    - mov edx,eax
-*/
-
-unregistersymbol(injectInfScores)
-unregistersymbol(pPlayerStruct1)
-
-aobscanmodule( injectInfScores, SOR4.exe, 03 41 28 48 8B CA )
-
-alloc( newmemInfScores, 1024, injectInfScores )
-
-label(code)
-label(pPlayerStruct1)
-
-newmemInfScores:
-    mov [rcx+28], #77777777
-    mov [pPlayerStruct1], rcx
-code:
-    add eax, [rcx+28]
-    mov rcx, rdx
-    jmp injectInfScores+5
-
-pPlayerStruct1:
-    dq 0
-registersymbol(pPlayerStruct1)
-
-injectInfScores:
-    jmp newmemInfScores
-    nop
-registersymbol(injectInfScores)
-
-[DISABLE]
-{$asm}
-
-injectInfScores:
-    db 03 41 28 48 8B CA
-
-unregistersymbol(injectInfScores)
-unregistersymbol(pPlayerStruct1)
-
-dealloc(newmemInfScores)
-
-</AssemblerScript>
-      <Hotkeys>
-        <Hotkey>
-          <Action>Activate</Action>
-          <Keys>
-            <Key>18</Key>
-            <Key>45</Key>
-          </Keys>
-          <ID>0</ID>
-          <ActivateSound>Activate</ActivateSound>
-        </Hotkey>
-        <Hotkey>
-          <Action>Deactivate</Action>
-          <Keys>
-            <Key>18</Key>
-            <Key>46</Key>
-          </Keys>
-          <ID>1</ID>
-          <DeactivateSound>Deactivate</DeactivateSound>
-        </Hotkey>
-        <Hotkey>
-          <Action>Toggle Activation</Action>
-          <Keys>
-            <Key>17</Key>
-            <Key>98</Key>
-          </Keys>
-          <ID>2</ID>
-          <ActivateSound>Activate</ActivateSound>
-          <DeactivateSound>Deactivate</DeactivateSound>
-        </Hotkey>
-      </Hotkeys>
-      <CheatEntries>
-        <CheatEntry>
-          <ID>9217</ID>
-          <Description>"pPlayerStruct1"</Description>
-          <ShowAsHex>1</ShowAsHex>
-          <ShowAsSigned>0</ShowAsSigned>
-          <VariableType>8 Bytes</VariableType>
-          <Address>[pPlayerStruct1]</Address>
-        </CheatEntry>
-      </CheatEntries>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>9228</ID>
-      <Description>"==========================================================="</Description>
-      <LastState Value="" RealAddress="00000000"/>
-      <GroupHeader>1</GroupHeader>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>9229</ID>
-      <Description>"Infinite Lives"</Description>
-      <LastState Activated="1"/>
-      <Color>008000</Color>
-      <VariableType>Auto Assembler Script</VariableType>
-      <AssemblerScript>[ENABLE]
-{$asm}
-/*
-SOR4.exe+3C877C - FF 09                 - dec [rcx]
-SOR4.exe+3C877E - 48 8B CE              - mov rcx,rsi
-SOR4.exe+3C8781 - 8B D3                 - mov edx,ebx
-SOR4.exe+3C8783 - 45 33 C0              - xor r8d,r8d
-*/
-
-unregistersymbol(injectInjLivesMy)
-
-aobscanmodule( injectInjLivesMy, SOR4.exe, FF 09 48 8B CE )
-
-injectInjLivesMy:
-    nop
-    nop
-registersymbol(injectInjLivesMy)
-
-[DISABLE]
-{$asm}
-
-injectInjLivesMy:
-    db FF 09
-
-unregistersymbol(injectInjLivesMy)
-
-</AssemblerScript>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>9230</ID>
-      <Description>"Unlimited Stars"</Description>
-      <Options moDeactivateChildrenAsWell="1"/>
-      <LastState/>
-      <Color>008000</Color>
-      <VariableType>Auto Assembler Script</VariableType>
-      <AssemblerScript>[ENABLE]
+          <ID>9230</ID>
+          <Description>"Unlimited Stars"</Description>
+          <Options moDeactivateChildrenAsWell="1"/>
+          <LastState/>
+          <Color>008000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
 {$asm}
 /*
 SOR4.exe+33746A - 8B 44 10 54 - mov eax, [rax+rdx+54]
@@ -503,107 +278,88 @@ unregistersymbol(pPlayerStruct3)
 dealloc(newmemInfStars)
 
 </AssemblerScript>
-      <Hotkeys>
-        <Hotkey>
-          <Action>Activate</Action>
-          <Keys>
-            <Key>18</Key>
-            <Key>36</Key>
-          </Keys>
-          <ID>0</ID>
-          <ActivateSound>Activate</ActivateSound>
-        </Hotkey>
-        <Hotkey>
-          <Action>Deactivate</Action>
-          <Keys>
-            <Key>18</Key>
-            <Key>35</Key>
-          </Keys>
-          <ID>1</ID>
-          <DeactivateSound>Deactivate</DeactivateSound>
-        </Hotkey>
-        <Hotkey>
-          <Action>Toggle Activation</Action>
-          <Keys>
-            <Key>18</Key>
-            <Key>98</Key>
-          </Keys>
-          <ID>2</ID>
-          <ActivateSound>Activate</ActivateSound>
-          <DeactivateSound>Deactivate</DeactivateSound>
-        </Hotkey>
-      </Hotkeys>
-      <CheatEntries>
-        <CheatEntry>
-          <ID>9231</ID>
-          <Description>"Base ADDR"</Description>
-          <ShowAsHex>1</ShowAsHex>
-          <ShowAsSigned>0</ShowAsSigned>
-          <Color>C0C0C0</Color>
-          <VariableType>8 Bytes</VariableType>
-          <Address>[pPlayerStruct3]</Address>
+          <Hotkeys>
+            <Hotkey>
+              <Action>Activate</Action>
+              <Keys>
+                <Key>18</Key>
+                <Key>36</Key>
+              </Keys>
+              <ID>0</ID>
+              <ActivateSound>Activate</ActivateSound>
+            </Hotkey>
+            <Hotkey>
+              <Action>Deactivate</Action>
+              <Keys>
+                <Key>18</Key>
+                <Key>35</Key>
+              </Keys>
+              <ID>1</ID>
+              <DeactivateSound>Deactivate</DeactivateSound>
+            </Hotkey>
+            <Hotkey>
+              <Action>Toggle Activation</Action>
+              <Keys>
+                <Key>18</Key>
+                <Key>98</Key>
+              </Keys>
+              <ID>2</ID>
+              <ActivateSound>Activate</ActivateSound>
+              <DeactivateSound>Deactivate</DeactivateSound>
+            </Hotkey>
+          </Hotkeys>
           <CheatEntries>
             <CheatEntry>
-              <ID>9232</ID>
-              <Description>"Lives"</Description>
+              <ID>9231</ID>
+              <Description>"Base ADDR"</Description>
+              <LastState Value="00007FF7D4CB2D78" RealAddress="240564BA088"/>
+              <ShowAsHex>1</ShowAsHex>
               <ShowAsSigned>0</ShowAsSigned>
-              <VariableType>4 Bytes</VariableType>
-              <Address>+28</Address>
-            </CheatEntry>
-            <CheatEntry>
-              <ID>9233</ID>
-              <Description>"Health"</Description>
-              <DropDownList DisplayValueAsItem="1">6553600:Max
+              <Color>C0C0C0</Color>
+              <VariableType>8 Bytes</VariableType>
+              <Address>[pPlayerStruct3]</Address>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>9232</ID>
+                  <Description>"Lives"</Description>
+                  <LastState Value="3" RealAddress="240564BA0B0"/>
+                  <ShowAsSigned>0</ShowAsSigned>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>+28</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>9233</ID>
+                  <Description>"Health"</Description>
+                  <DropDownList DisplayValueAsItem="1">6553600:Max
 </DropDownList>
-              <ShowAsSigned>0</ShowAsSigned>
-              <VariableType>4 Bytes</VariableType>
-              <Address>+2C</Address>
-            </CheatEntry>
-            <CheatEntry>
-              <ID>9234</ID>
-              <Description>"Stars"</Description>
-              <DropDownList DisplayValueAsItem="1">7:Max
+                  <LastState Value="6553600" RealAddress="240564BA0B4"/>
+                  <ShowAsSigned>0</ShowAsSigned>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>+2C</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>9234</ID>
+                  <Description>"Stars"</Description>
+                  <DropDownList DisplayValueAsItem="1">7:Max
 </DropDownList>
-              <ShowAsSigned>0</ShowAsSigned>
-              <VariableType>4 Bytes</VariableType>
-              <Address>+54</Address>
+                  <LastState Value="7" RealAddress="240564BA0DC"/>
+                  <ShowAsSigned>0</ShowAsSigned>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>+54</Address>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
       </CheatEntries>
     </CheatEntry>
     <CheatEntry>
-      <ID>9236</ID>
-      <Description>"6553600"</Description>
-      <ShowAsSigned>0</ShowAsSigned>
-      <VariableType>4 Bytes</VariableType>
-      <Address/>
+      <ID>142</ID>
+      <Description>"==========================================================="</Description>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
     </CheatEntry>
   </CheatEntries>
-  <CheatCodes>
-    <CodeEntry Color="80000008">
-      <Description>Change of sub eax,edi</Description>
-      <AddressString>SOR4.exe+3D2818</AddressString>
-      <Before>
-        <Byte>50</Byte>
-        <Byte>48</Byte>
-        <Byte>8B</Byte>
-        <Byte>46</Byte>
-        <Byte>30</Byte>
-      </Before>
-      <Actual>
-        <Byte>2B</Byte>
-        <Byte>C7</Byte>
-      </Actual>
-      <After>
-        <Byte>89</Byte>
-        <Byte>46</Byte>
-        <Byte>30</Byte>
-        <Byte>8B</Byte>
-        <Byte>46</Byte>
-      </After>
-    </CodeEntry>
-  </CheatCodes>
   <UserdefinedSymbols/>
   <Structures StructVersion="2">
     <Structure Name="Player Struct HP" AutoFill="0" AutoCreate="1" DefaultHex="0" AutoDestroy="0" DoNotSaveLocal="0" RLECompression="1" AutoCreateStructsize="4096">
